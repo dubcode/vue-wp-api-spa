@@ -1,0 +1,46 @@
+
+
+
+<div class="container" id="app">
+  
+  <div class="row colOne">
+    
+    <div class="row router">
+        <router-view></router-view>
+    </div>
+    
+  </div>
+  
+  <div class="row colTwo">
+    
+    <div class="filters">
+      <button v-on:click="sortTitles">Sort by Title</button>
+      <button v-on:click="sortDates">Sort by Date</button>
+      <button v-on:click="sortCategories">Sort by Category</button>
+      <div class="filter input-group"> 
+        <input type="text" placeholder="Search by Name" v-model="filter_name"/>
+      </div>
+    </div>
+
+    <div class="row grid">
+      <div class="grid__item" v-for="(post, index) in filteredNames.slice(pageStart, pageStart + countOfPage)">
+          <router-link :to="{ path: '/post/'+ post.id}" class="grid__item__btn">
+            <div class="grid__item__btn__title">
+              <h4>{{ post.title.rendered }}</h4>
+            </div>
+            <div class="grid__item__btn__img">
+              <img :src="post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url" alt="this.title" class="post__image"/>
+            </div>
+          </router-link> 
+      </div>
+    </div>
+    
+    <ul class="pagination">
+        <li class="page-item" v-bind:class="{'disabled': (currPage === 1)}" @click.prevent="setPage(currPage-1)"><a class="page-link" href="">Prev</a></li>
+        <li class="page-item" v-for="n in totalPage" v-bind:class="{'active': (currPage === (n))}" @click.prevent="setPage(n)"><a class="page-link" href="">{{n}}</a></li>
+        <li class="page-item" v-bind:class="{'disabled': (currPage === totalPage)}" @click.prevent="setPage(currPage+1)"><a class="page-link" href="">Next</a></li>
+      </ul>
+ 
+  </div>
+  
+</div>
